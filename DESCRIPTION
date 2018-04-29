@@ -1,7 +1,7 @@
 Package: uniqueGeneric
-Title: The unique generic
-Description: A minimalist R package that only defines the unique S4 generic.
-Version: 0.0.1
+Title: A unique() generic
+Description: A minimalist R package that only defines a unique() S4 generic.
+Version: 0.0.2
 Author: The Boss Baby
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 License: Artistic-2.0
