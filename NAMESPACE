@@ -1,7 +1,3 @@
 import(methods)
-import(utils)
-import(graphics)
-import(stats)
-import(parallel)
 
 export(unique)
