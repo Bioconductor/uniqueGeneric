@@ -90,31 +90,42 @@ Note that something is already going wrong with `selectMethod()`:
     # x="ANY"
     # x="B"
 
-    selectMethod(uniqueGeneric::unique, "B")  # ok
+    selectMethod(uniqueGeneric::unique, "B")  # finds the method
 
     showMethods(unique)
     # Function: unique (package uniqueGeneric)
     # x="ANY"
     # x="B"
 
-    selectMethod(unique, "B")  # ok
+    selectMethod(unique, "B")  # finds the method
 
     showMethods("unique")
     # Function: unique (package uniqueGeneric)
     # x="ANY"
     # x="B"
 
-    selectMethod("unique", "B")  # doesn't find the method!
+    selectMethod("unique", "B")  # does NOT find the method!
 
 However, despite this, method dispatch works as expected:
 
-    b <- new("B", values=c(4:1, 1:4))
+    b <- new("B", values=c(6:3, 1:4))
     unique(b)
+    # An object of class "B"
+    # Slot "values":
+    # [1] 6 5 4 3 1 2
+
 
 But calls to `callNextMethod()` that happen from within a method defined
 on the `uniqueGeneric::unique()` generic are broken:
 
     setClass("C", contains="B")
+
+    c <- new("C", b)
+
+    uniqueGeneric::unique(c)
+    # An object of class "C"
+    # Slot "values":
+    # [1] 6 5 4 3 1 2
 
     setMethod("unique", "C",
         function(x, incomparables=FALSE, ...) callNextMethod()
@@ -158,9 +169,10 @@ but `selectMethod()` can't find it:
     # target  "C"  
     # defined "ANY"
 
-It seems that when we did `uniqueGeneric::unique(new("C"))`, the method was
-was found but `callNextMethod()` went looking for the next method in the
-wrong generic:
+It seems that when we did `uniqueGeneric::unique(new("C"))`, the right
+method was was found but `callNextMethod()` went looking for the next
+method in the wrong generic. This can be observed by defining a class
+that extends A and defining a `uniqueGeneric::unique()` method for it:
 
     setClass("D", contains="A")
 
@@ -180,6 +192,10 @@ wrong generic:
     # x="B"
     # x="C"
     # x="D"
+
+When calling `uniqueGeneric::unique(new("D"))`, the next method **in the
+method table for `uniqueGeneric::unique()`** is the default method i.e.
+the method for signature `"ANY"`. But that's not what's happening:
 
     uniqueGeneric::unique(new("D"))
     # Hi, I'm the uniqueMethod::unique() method for A objects.
