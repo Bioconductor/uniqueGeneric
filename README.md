@@ -1,11 +1,9 @@
----
-title: "A hard-to-reproduce bug in callNextMethod()"
----
+# A hard-to-reproduce bug in callNextMethod()
 
 uniqueMethod and uniqueGeneric are minimalist packages that can be used
 to reproduce the bug.
 
-# Quick and easy way to reproduce the bug
+## Quick and easy way to reproduce the bug
 
     devtools::install_github("Bioconductor/uniqueMethod")
     devtools::install_github("Bioconductor/uniqueGeneric")
@@ -27,7 +25,7 @@ to reproduce the bug.
     unique(new("C"))
     #Error in unique.default(x = x) : unique() applies only to vectors
 
-# Details
+## Details
 
 The `unique()` S4 generic defined in uniqueGeneric is defined with
 `setGeneric("unique", signature="x")` so is different from the
