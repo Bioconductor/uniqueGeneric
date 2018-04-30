@@ -1,7 +1,11 @@
-# Quick way to reproduce a hard-to-reproduce bug in `callNextGeneric`
+---
+title: "A hard-to-reproduce bug in callNextMethod()"
+---
 
 uniqueMethod and uniqueGeneric are minimalist packages that can be used
-to reproduce the bug:
+to reproduce the bug.
+
+# Quick and easy way to reproduce the bug
 
     devtools::install_github("Bioconductor/uniqueMethod")
     devtools::install_github("Bioconductor/uniqueGeneric")
